@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@keyframes floatCode {
+	0% {
+		transform: translateY(0%);
+	}
+	100% {
+		transform: translateY(-66.66%);
+	}
+}
+
+.animate-floatCode {
+	animation: floatCode 30s linear infinite;
+}
+/* Glass effect for floating UI */
+.glass {
+	background: rgba(255, 255, 255, 0.6);
+	backdrop-filter: blur(10px);
+}
+
+/* Dark mode (optional) */
+@media (prefers-color-scheme: dark) {
+	body {
+		@apply bg-neutral-900 text-neutral-100;
+	}
+	.glass {
+		background: rgba(30, 30, 30, 0.5);
+	}
+}
