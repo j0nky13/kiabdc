@@ -10,6 +10,7 @@ import AssociatesTab from './components/dashboard/AssociatesTab';
 import SalesTab from './components/dashboard/SalesTab';
 import ManagerTab from './components/dashboard/ManagerTab';
 import SettingsTab from './components/dashboard/SettingsTab';
+import NotFound from './pages/404';
 
 function PrivateRoute({ children }) {
   const { user, loading } = useAuth();
@@ -53,7 +54,7 @@ export default function App() {
         <Route index element={<Navigate to="overview" replace />} />
       </Route>
 
-      <Route path="*" element={<Navigate to="/" replace />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }
