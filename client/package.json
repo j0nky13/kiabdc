@@ -14,6 +14,7 @@
     "@tsparticles/react": "^3.0.0",
     "@tsparticles/slim": "^3.8.1",
     "axios": "^1.10.0",
+    "firebase": "^12.4.0",
     "firebase-admin": "^13.5.0",
     "firebase-functions": "^6.5.0",
     "framer-motion": "^12.23.6",
