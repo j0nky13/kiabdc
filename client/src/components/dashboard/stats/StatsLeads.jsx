@@ -9,7 +9,7 @@ export default function StatsLeads() {
         <li>Skips/Passes breakdown (from rotation logs)</li>
       </ul>
       <div className="text-xs text-white/50 mt-3">
-        (This is a scaffold — I’ll hook it to `leads` + `rotation/logs` once you’re happy with layout.)
+        ()
       </div>
     </div>
   );
