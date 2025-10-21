@@ -5,6 +5,38 @@
 		<link rel="icon" type="image/svg+xml" href="" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Kia Country BDC</title>
+		<style>
+			/* Hide until theme initialized to prevent flash */
+			html:not([data-theme-initialized]) {
+				visibility: hidden;
+			}
+		</style>
+		<script>
+			(function () {
+				var KEY = 'bdc.theme';
+				var root = document.documentElement;
+				var saved = null;
+				try {
+					saved = localStorage.getItem(KEY);
+				} catch (e) {}
+				var prefersDark = false;
+				try {
+					prefersDark =
+						window.matchMedia &&
+						window.matchMedia('(prefers-color-scheme: dark)').matches;
+				} catch (e) {}
+				var theme =
+					saved === 'dark' || saved === 'light'
+						? saved
+						: prefersDark
+						? 'dark'
+						: 'light';
+				if (theme === 'dark') root.classList.add('dark');
+				else root.classList.remove('dark');
+				root.style.colorScheme = theme;
+				root.setAttribute('data-theme-initialized', 'true');
+			})();
+		</script>
 	</head>
 	<body>
 		<div id="root"></div>

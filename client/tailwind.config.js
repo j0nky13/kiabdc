@@ -1,6 +1,11 @@
-
 /** @type {import('tailwindcss').Config} */
 export default {
+  // Avoid sticky :hover styles on touch devices
+  future: { hoverOnlyWhenSupported: true },
+  darkMode: 'class',
+  // Keep a minimal safelist; not strictly required for Tailwind's dark mode,
+  // but harmless and ensures the class is never purged in uncommon setups.
+  safelist: ['dark'],
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",

@@ -1,5 +1,5 @@
-import React from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import {
   LucideHome,
@@ -9,22 +9,22 @@ import {
   LucideBriefcase,
   LucideLogOut,
   LucideMenu,
+  LucideRoute,
+  LucideList,
+  LucideChevronDown,
+  LucideChevronRight
 } from "lucide-react";
-
-
 
 export default function SideBar({ open = false, onClose = () => {} }) {
   const navigate = useNavigate();
+  const location = useLocation();
   const { user, logout, isManager } = useAuth();
+  const [statsOpen, setStatsOpen] = useState(false);
 
-console.log('role debug:', {
-  profile: user?.profile?.role,
-  profileRole: user?.profileRole,
-  claimRole: user?.claimRole
-});
+  useEffect(() => {
+    if (location.pathname.startsWith('/dashboard/stats')) setStatsOpen(true);
+  }, [location.pathname]);
 
-
-  // Avoid rendering wrong menu state while auth hydrates
   if (!user) return null;
 
   const activeClass =
@@ -64,44 +64,83 @@ console.log('role debug:', {
             </button>
           </div>
 
-
           {/* Navigation */}
-          <nav className="flex flex-col gap-2 text-sm mt-2">
+          <nav className="flex flex-col gap-2 text-sm mt-2 overflow-y-auto">
             {user?.email && (
               <div className="text-gray-300 text-sm font-medium text-center mb-3 break-all px-2 flex justify-center">
                 <span className="text-center block">{user.email}</span>
               </div>
             )}
+
             <NavLink to="/dashboard/overview" end onClick={onClose} className={({ isActive }) => (isActive ? activeClass : defaultClass)}>
               <LucideHome size={18} /> Overview
             </NavLink>
+
             <NavLink to="/dashboard/associates" end onClick={onClose} className={({ isActive }) => (isActive ? activeClass : defaultClass)}>
-              <LucideUsers size={18} /> Sales
-            </NavLink>
-            <NavLink to="/dashboard/sales" end onClick={onClose} className={({ isActive }) => (isActive ? activeClass : defaultClass)}>
-              <LucideTrendingUp size={18} /> Stats
+              <LucideUsers size={18} /> Salesman
             </NavLink>
 
-            {/* Manager tab only */}
+            {/* Stats Dropdown */}
+            <div>
+              <button
+                onClick={() => setStatsOpen(!statsOpen)}
+                className="flex items-center justify-between w-full px-4 py-2 rounded-lg hover:bg-white/10 dark:hover:bg-neutral-800/30 text-gray-300 transition"
+              >
+                <span className="flex items-center gap-2">
+                  <LucideTrendingUp size={18} /> Stats
+                </span>
+                {statsOpen ? <LucideChevronDown size={16} /> : <LucideChevronRight size={16} />}
+              </button>
+
+              {statsOpen && (
+                <div className="ml-6 mt-1 flex flex-col gap-1 border-l border-white/10 pl-3">
+                  <NavLink
+                    to="/dashboard/stats/sales"
+                    end
+                    onClick={onClose}
+                    className={({ isActive }) =>
+                      isActive
+                        ? "flex items-center gap-2 px-3 py-1 rounded-lg bg-white/20 text-white font-medium transition"
+                        : "flex items-center gap-2 px-3 py-1 rounded-lg hover:bg-white/10 text-gray-300 transition"
+                    }
+                  >
+                    Sales
+                  </NavLink>
+                  <NavLink
+                    to="/dashboard/stats/leads"
+                    end
+                    onClick={onClose}
+                    className={({ isActive }) =>
+                      isActive
+                        ? "flex items-center gap-2 px-3 py-1 rounded-lg bg-white/20 text-white font-medium transition"
+                        : "flex items-center gap-2 px-3 py-1 rounded-lg hover:bg-white/10 text-gray-300 transition"
+                    }
+                  >
+                    Leads
+                  </NavLink>
+                </div>
+              )}
+            </div>
+
+            {/* Manager-only */}
             {isManager && (
-              <NavLink to="/dashboard/management" end onClick={onClose} className={({ isActive }) => (isActive ? activeClass : defaultClass)}>
-                <LucideBriefcase size={18} /> Manager
-              </NavLink>
+              <>
+                <NavLink to="/dashboard/management" end onClick={onClose} className={({ isActive }) => (isActive ? activeClass : defaultClass)}>
+                  <LucideBriefcase size={18} /> Manager
+                </NavLink>
+                <NavLink to="/dashboard/routing" end onClick={onClose} className={({ isActive }) => (isActive ? activeClass : defaultClass)}>
+                  <LucideRoute size={18} /> Routing
+                </NavLink>
+                <NavLink to="/dashboard/leads" end onClick={onClose} className={({ isActive }) => (isActive ? activeClass : defaultClass)}>
+                  <LucideList size={18} /> Leads
+                </NavLink>
+              </>
             )}
 
             <NavLink to="/dashboard/settings" end onClick={onClose} className={({ isActive }) => (isActive ? activeClass : defaultClass)}>
               <LucideSettings size={18} /> Settings
             </NavLink>
           </nav>
-
-          {/*
-          // User email (previous location, now moved below)
-          {user?.email && (
-            <div className="text-gray-400 text-xs text-center mb-4 mt-auto border-t border-white/5 pt-3 break-all px-2">
-              {user.email}
-            </div>
-          )}
-          */}
 
           {/* Logout */}
           <div className="mt-auto pt-4 border-t border-white/10">

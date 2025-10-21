@@ -48,7 +48,7 @@ export default function Home() {
           </div>
         ) : (
           <>
-            <h1 className="text-2xl font-semibold mb-6">KIA — BDC Portal</h1>
+            <h1 className="text-2xl font-semibold mb-6">BDC Portal</h1>
             <form onSubmit={onSubmit} className="space-y-4">
               <div>
                 <label className="block text-sm mb-2">Work Email</label>

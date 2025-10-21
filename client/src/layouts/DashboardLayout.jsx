@@ -17,7 +17,7 @@ export default function DashboardLayout() {
   const greetText = user?.greeting?.trim() ? user.greeting.trim() : dayGreeting;
 
   return (
-    <div className="flex min-h-screen bg-gradient-to-br from-neutral-100/70 to-neutral-300/40 dark:from-neutral-900 dark:to-neutral-800 text-neutral-900 dark:text-white relative overflow-hidden">
+    <div className="flex min-h-screen bg-gradient-to-br from-neutral-100/70 to-neutral-300/40 dark:from-neutral-900 dark:to-neutral-800 text-neutral-900 dark:text-white relative overflow-x-hidden overflow-y-auto">
       <SideBar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
       <div className="flex-1 flex flex-col relative z-0">
@@ -49,7 +49,7 @@ export default function DashboardLayout() {
         </header>
 
         {/* Page body */}
-        <main className="flex-1 overflow-y-auto p-6 md:pl-[1rem]">
+        <main className="flex-1 p-6 md:pl-[1rem]">
           <div className="rounded-2xl backdrop-blur-xl bg-white/40 dark:bg-neutral-800/40 shadow-xl border border-white/20 p-6">
             <Outlet />
           </div>

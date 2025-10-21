@@ -7,10 +7,16 @@ import FinishLogin from './pages/FinishLogin';
 import DashboardLayout from './layouts/DashboardLayout';
 import OverviewTab from './components/dashboard/OverviewTab';
 import AssociatesTab from './components/dashboard/AssociatesTab';
-import SalesTab from './components/dashboard/SalesTab';
 import ManagerTab from './components/dashboard/ManagerTab';
 import SettingsTab from './components/dashboard/SettingsTab';
+import RoutingTab from './components/dashboard/RoutingTab';
+import LeadsTab from './components/dashboard/LeadsTab';
 import NotFound from './pages/404';
+
+// Stats nested pages
+import StatsLayout from './components/dashboard/stats/StatsLayout';
+import StatsSales from './components/dashboard/stats/StatsSales';
+import StatsLeads from './components/dashboard/stats/StatsLeads';
 
 function PrivateRoute({ children }) {
   const { user, loading } = useAuth();
@@ -27,34 +33,61 @@ function RequireManager({ children }) {
 
 export default function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/finish-login" element={<FinishLogin />} />
+    <div className="min-h-screen h-full">
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/finish-login" element={<FinishLogin />} />
 
-      <Route
-        path="/dashboard"
-        element={
-          <PrivateRoute>
-            <DashboardLayout />
-          </PrivateRoute>
-        }
-      >
-        <Route path="overview" element={<OverviewTab />} />
-        <Route path="associates" element={<AssociatesTab />} />
-        <Route path="sales" element={<SalesTab />} />
         <Route
-          path="management"
+          path="/dashboard"
           element={
-            <RequireManager>
-              <ManagerTab />
-            </RequireManager>
+            <PrivateRoute>
+              <DashboardLayout />
+            </PrivateRoute>
           }
-        />
-        <Route path="settings" element={<SettingsTab />} />
-        <Route index element={<Navigate to="overview" replace />} />
-      </Route>
+        >
+          <Route path="overview" element={<OverviewTab />} />
+          <Route path="associates" element={<AssociatesTab />} />
 
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+          {/* Nested Stats */}
+          <Route path="stats" element={<StatsLayout />}>
+            <Route path="sales" element={<StatsSales />} />
+            <Route path="leads" element={<StatsLeads />} />
+            <Route index element={<Navigate to="sales" replace />} />
+          </Route>
+
+          {/* Manager-only sections */}
+          <Route
+            path="management"
+            element={
+              <RequireManager>
+                <ManagerTab />
+              </RequireManager>
+            }
+          />
+          <Route
+            path="routing"
+            element={
+              <RequireManager>
+                <RoutingTab />
+              </RequireManager>
+            }
+          />
+          <Route
+            path="leads"
+            element={
+              <RequireManager>
+                <LeadsTab />
+              </RequireManager>
+            }
+          />
+
+          <Route path="settings" element={<SettingsTab />} />
+          <Route index element={<Navigate to="overview" replace />} />
+        </Route>
+
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </div>
   );
 }
